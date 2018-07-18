@@ -1,0 +1,130 @@
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="css/ionic.css">
+        
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/geturi.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var id = decodeURI(getUrlVars()["id"]);
+        var nim = decodeURI(getUrlVars()["nim"]);
+        var kdmk = decodeURI(getUrlVars()["kdmk"]);
+        var nilai = decodeURI(getUrlVars()["nilai"]);
+        $("#id").val(id);
+        $("#nim").val(nim);
+        $("#kdmk").val(kdmk);
+        $("#nilai").val(nilai);
+        $("#update").click(function() {
+            var id = $("#id").val();
+            var nim = $("#nim").val();
+            var kdmk = $("#kdmk").val();
+            var jumlah_nilai = $("#jumlah_nilai").val();
+            var dataString = "id=" + id + "&nim=" + nim + "&kdmk=" + kdmk + "&jumlah_nilai=" + jumlah_nilai + "&update=";
+            $.ajax({
+                type: "POST",
+                url: "http://sistem.infoakademik.xyz/update-nilai.php",
+                data: dataString,
+                crossDomain: true,
+                cache: false,
+                beforeSend: function() {
+                    $("#update").val('Connecting...');
+                },
+                success: function(data) {
+                    if (data == "success") {
+                        alert("Updated");
+                        $("#update").val("Update");
+                    } else if (data == "error") {
+                        alert("error");
+                    }
+                }
+            });
+
+        });
+        $("#delete").click(function() {
+            var id = $("#id").val();
+            var dataString = "id=" + id + "&delete=";
+            $.ajax({
+                type: "GET",
+                url: "http://sistem.infoakademik.xyz/delete-nilai.php",
+                data: dataString,
+                crossDomain: true,
+                cache: false,
+                beforeSend: function() {
+                    $("#delete").val('Connecting...');
+                },
+                success: function(data) {
+                    if (data == "success") {
+                        alert("Deleted");
+                        $("#delete").val("Delete");
+                    } else if (data == "error") {
+                        alert("error");
+                    }
+                }
+            });
+
+        });
+    });
+    </script>
+</head>
+
+<body><nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>                        
+            </button>
+            <a class="navbar-brand" href="#">Update Data Nilai</a>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="index.html">Home</a></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Input <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="Mahasiswa.html">Input Mahasiswa</a></li>
+                    <li><a href="Nilai.html">Input Nilai</a></li>
+                    <li><a href="Matakuliah.html">Input Mata Kuliah</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">List <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                        <li><a href="readjson-mahasiswa.html">List Mahasiswa</a></li>
+                        <li><a href="readjson-nilai.html">List Nilai</a></li>
+                        <li><a href="readjson-matakuliah.html">List Mata Kuliah</a></li>
+              </ul>
+            </li>
+            </ul>
+          </div>
+        </div>
+      </nav>  
+
+    <br/>
+    <div class="list">
+        <input type="hidden" id="id" value="" />
+        <div class="item">
+            <label>nim</label>
+            <input type="text" id="nim" value="" />
+        </div>
+        <div class="item">
+            <label>kdmk</label>
+            <input type="text" id="kdmk" value="" />
+        </div>
+        <div class="item">
+            <label>nilai</label>
+            <input type="text" id="nilai" value="" />
+        </div>
+        <div class="item">
+            <input type="button" id="update" class="btn btn-success btn-block" value="Update" />
+            <input type="button" id="delete" class="btn btn-danger btn-block" value="Delete" />
+        </div>
+    </div>
+</body>
+
+</html>
